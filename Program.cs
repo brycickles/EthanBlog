@@ -5,6 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using EthanBlog.Data.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using EthanBlog.BusinessManagers.Interfaces;
+using EthanBlog.Service.Interfaces;
+using EthanBlog.BusinessManagers;
+using EthanBlog.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +22,15 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+
+//make services able to be injected
+builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<DbContext, ApplicationDbContext>(f => f.GetService<ApplicationDbContext>());
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

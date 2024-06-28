@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EthanBlog.data\EthanBlog.Data.csproj" />
+    <ProjectReference Include="..\EthanBlog.Service\EthanBlog.Service.csproj" />
   </ItemGroup>
 
 </Project>
