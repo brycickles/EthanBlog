@@ -19,11 +19,11 @@ namespace EthanBlog.Controllers
 
         public IActionResult Create()
         {
-            return View(new CreateBlogViewModel());
+            return View(new CreateViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CreateBlogViewModel createBlogViewModel) {
+        public async Task<IActionResult> Add(CreateViewModel createBlogViewModel) {
             await blogBusinessManager.CreateBlog(createBlogViewModel, User);
             return RedirectToAction("Create");
         }

@@ -10,6 +10,7 @@ using EthanBlog.BusinessManagers.Interfaces;
 using EthanBlog.Service.Interfaces;
 using EthanBlog.BusinessManagers;
 using EthanBlog.Service;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +24,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-
 //make services able to be injected
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<DbContext, ApplicationDbContext>(f => f.GetService<ApplicationDbContext>());
+
+//Add file provider service
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿@model EthanBlog.Models.BlogViewModels.CreateBlogViewModel
+﻿@model EthanBlog.Models.BlogViewModels.CreateViewModel
 
 <div class="container-fluid">
     <h1 class="mt-4">Create</h1>
@@ -12,6 +12,14 @@
                         Write a post
                     </div>
                     <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="BlogHeaderImage"></label>
+                            <div class="custom-file">
+                                <input asp-for="BlogHeaderImage" class="custom-file-input" accept="image/*" />
+                                <label class="custom-file-label">Choose file</label>
+                            </div>
+                            <span asp-validation-for="BlogHeaderImage" class="text-danger"></span>
+                        </div>
                         <div class="form-group">
                             <label asp-for="Blog.Title"></label>
                             <input asp-for="Blog.Title" class="form-control" required />
@@ -46,5 +54,10 @@
             .catch(error => {
                 console.error(error);
             });
+
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        })
     </script>
 }

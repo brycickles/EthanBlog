@@ -8,28 +8,51 @@ using System;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
+
 namespace EthanBlog.BusinessManagers
 {
-    public class BlogBusinessManager : IBlogBusinessManager {
+    public class BlogBusinessManager : IBlogBusinessManager
+    {
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
         private readonly IBlogService blogService;
-        public BlogBusinessManager(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager, IBlogService blogService)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public BlogBusinessManager(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager,
+            IBlogService blogService,
+            IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.blogService = blogService;
+            this.webHostEnvironment = webHostEnvironment;
         }
-        public async Task<Blog> CreateBlog(CreateBlogViewModel createBlogViewModel, ClaimsPrincipal claimsPrincipal)
+        public async Task<Blog> CreateBlog(CreateViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
         {
-            ApplicationUser appUser = new ApplicationUser();
-            appUser.FirstName = "Ethan"; 
-            appUser.LastName = "LastName";
-            Blog blog = createBlogViewModel.Blog;
+            Blog blog = createViewModel.Blog;
 
             blog.CreatedOn = DateTime.Now;
-            blog.Creator = appUser;
-            //blog.Creator = await userManager.getUserAsync(claimsPrincipal);
+            blog.Creator = await userManager.GetUserAsync(claimsPrincipal);
 
-            return await blogService.Add(blog);
+            blog = await blogService.Add(blog);
+
+            //build image path 
+            string webRootPath = webHostEnvironment.WebRootPath; //points to wwwroot
+            string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}\HeaderImage.jpg";
+
+            EnsureFolder(pathToImage);
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await createViewModel.BlogHeaderImage.CopyToAsync(fileStream);
+            }
+            return blog;
+        }
+
+        private void EnsureFolder(string path)
+        {
+            string directoryName = Path.GetDirectoryName(path);
+            if (directoryName.Length > 0)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            }
         }
     }
 }
