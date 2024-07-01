@@ -38,7 +38,7 @@ namespace EthanBlog.BusinessManagers
 
         public Models.HomeViewModels.IndexViewModel GetIndexViewModel(string searchString, int? page)
         {
-            int pageSize = 10;
+            int pageSize = 20;
             int pageNumber = page ?? 1;
             var posts = postService.GetPosts(searchString ?? string.Empty)
                 .Where(post => post.Published);
@@ -50,6 +50,35 @@ namespace EthanBlog.BusinessManagers
                 PageNumber = pageNumber
             };
 
+        }
+        public async Task<ActionResult<PostViewModel>> GetPostViewModel(int? id, ClaimsPrincipal claimsPrincipal)
+        {
+            if (id is null)
+            {
+                return new BadRequestResult();
+            }
+            var postId = id.Value;
+            var post = postService.GetPost(postId);
+            if (post == null)
+            {
+                return new NotFoundResult();
+            }
+
+            //check if post has been published. If not published, we want to check if we are the owner of the post. if so, go ahead and allow them to view the post to edit or publish it
+            if (!post.Published)
+            {
+                var authorizationResult = await authorizationService.AuthorizeAsync(claimsPrincipal, post, Operations.Read);
+
+                if (!authorizationResult.Succeeded)
+                {
+                    return DetermineActionResult(claimsPrincipal);
+                }
+            }
+
+            return new PostViewModel
+            {
+                Post = post
+            };
         }
         public async Task<Post> CreatePost(CreateViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
         {

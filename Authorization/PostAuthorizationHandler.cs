@@ -20,6 +20,11 @@ namespace EthanBlog.Authorization
             {
                 context.Succeed(requirement);
             }
+
+            if(requirement.Name == Operations.Read.Name && !resource.Published && applicationUser == resource.Creator)
+            {
+                context.Succeed(requirement);
+            }
         }
     }
 }
