@@ -1,4 +1,5 @@
-﻿using EthanBlog.Models;
+﻿using EthanBlog.BusinessManagers.Interfaces;
+using EthanBlog.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,27 +7,17 @@ namespace EthanBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IPostBusinessManager postBusinessManager;
+        public HomeController(IPostBusinessManager blogBusinessManager)
         {
-            _logger = logger;
+            this.postBusinessManager = blogBusinessManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int? page)
         {
-            return View();
+            return View(postBusinessManager.GetIndexViewModel(searchString, page));
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
