@@ -1,16 +1,16 @@
 ﻿using EthanBlog.Data.Models;
 using EthanBlog.Models.AdminViewModels;
-using EthanBlog.Models.BlogViewModels;
+using EthanBlog.Models.PostViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace EthanBlog.BusinessManagers.Interfaces
 {
-    public interface IBlogBusinessManager
+    public interface IPostBusinessManager
     {
         Models.HomeViewModels.IndexViewModel GetIndexViewModel(string searchString, int? page);
-        Task<Blog> CreateBlog(CreateViewModel createBlogViewModel, ClaimsPrincipal claimsPrincipal);
-        Task<ActionResult<EditViewModel>> UpdateBlog(EditViewModel editViewModel, ClaimsPrincipal claimsPrincipal);
+        Task<Post> CreatePost(CreateViewModel createViewModel, ClaimsPrincipal claimsPrincipal);
+        Task<ActionResult<EditViewModel>> UpdatePost(EditViewModel editViewModel, ClaimsPrincipal claimsPrincipal);
         Task<ActionResult<EditViewModel>> GetEditViewModel(int? id, ClaimsPrincipal claimsPrincipal);
     }
 }

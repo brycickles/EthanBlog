@@ -1,12 +1,12 @@
 ﻿using EthanBlog.Data.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace EthanBlog.Models.BlogViewModels
+namespace EthanBlog.Models.PostViewModels
 {
     public class CreateViewModel
     {
         [Required, Display(Name = "Header Image")]
-        public IFormFile BlogHeaderImage { get; set; }
-        public Blog Blog { get; set; }
+        public IFormFile HeaderImage { get; set; }
+        public Post Post { get; set; }
     }
 }

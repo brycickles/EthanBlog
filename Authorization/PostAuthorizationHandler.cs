@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace EthanBlog.Authorization
 {
-    public class BlogAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Blog>
+    public class PostAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Post>
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
-        public BlogAuthorizationHandler(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager)
+        public PostAuthorizationHandler(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, Blog resource)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement, Post resource)
         {
             var applicationUser = await userManager.GetUserAsync(context.User);
 

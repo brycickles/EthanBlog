@@ -27,16 +27,16 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 //make services able to be injected
-builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
+builder.Services.AddScoped<IPostBusinessManager, PostBusinessManager>();
 builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
-builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<DbContext, ApplicationDbContext>(f => f.GetService<ApplicationDbContext>());
 
 //Add file provider service
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 //Add service for authorization 
-builder.Services.AddTransient<IAuthorizationHandler, BlogAuthorizationHandler>();
+builder.Services.AddTransient<IAuthorizationHandler, PostAuthorizationHandler>();
 var app = builder.Build();
 
 

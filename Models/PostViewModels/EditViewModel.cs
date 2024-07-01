@@ -2,12 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace EthanBlog.Models.BlogViewModels
+namespace EthanBlog.Models.PostViewModels
 {
     public class EditViewModel
     {
         [Display(Name = "Header Image")]
-        public IFormFile BlogHeaderImage { get; set; }
-        public Blog Blog { get; set; }
+        public IFormFile HeaderImage { get; set; }
+        public Post Post { get; set; }
     }
 }

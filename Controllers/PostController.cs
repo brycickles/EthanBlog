@@ -1,16 +1,16 @@
 ﻿using EthanBlog.BusinessManagers.Interfaces;
-using EthanBlog.Models.BlogViewModels;
+using EthanBlog.Models.PostViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 using System.Security.Policy;
 
-namespace EthanBlog.Controllers
+namespace Ethanpost.Controllers
 {
-    public class BlogController : Controller
+    public class PostController : Controller
     {
-        private readonly IBlogBusinessManager blogBusinessManager;
-        public BlogController(IBlogBusinessManager blogBusinessManager) { 
-            this.blogBusinessManager = blogBusinessManager;
+        private readonly IPostBusinessManager postBusinessManager;
+        public PostController(IPostBusinessManager postBusinessManager) { 
+            this.postBusinessManager = postBusinessManager;
         }
         public IActionResult Index()
         {
@@ -24,7 +24,7 @@ namespace EthanBlog.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            var actionResult = await blogBusinessManager.GetEditViewModel(id, User);
+            var actionResult = await postBusinessManager.GetEditViewModel(id, User);
             if (actionResult.Result is null) //successful
             {
                 return View(actionResult.Value);
@@ -34,18 +34,18 @@ namespace EthanBlog.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Add(CreateViewModel createViewModel) {
-            await blogBusinessManager.CreateBlog(createViewModel, User);
+            await postBusinessManager.CreatePost(createViewModel, User);
             return RedirectToAction("Create");
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(EditViewModel editViewModel)
         {
-            var actionResult = await blogBusinessManager.UpdateBlog(editViewModel, User);
+            var actionResult = await postBusinessManager.UpdatePost(editViewModel, User);
 
             if (actionResult.Result is null)
             {
-                return RedirectToAction("Edit", new { editViewModel.Blog.Id });
+                return RedirectToAction("Edit", new { editViewModel.Post.Id });
             }
             return actionResult.Result;
         }

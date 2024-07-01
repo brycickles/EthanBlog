@@ -10,12 +10,12 @@ namespace EthanBlog.BusinessManagers
     public class AdminBusinessManager : IAdminBusinessManager
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
-        private IBlogService blogService;
+        private IPostService postService;
         public AdminBusinessManager(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager,
-            IBlogService blogService)
+            IPostService postService)
         {
             this.userManager = userManager;
-            this.blogService = blogService;
+            this.postService = postService;
         }
 
         //method to get back our blogs
@@ -23,7 +23,7 @@ namespace EthanBlog.BusinessManagers
         {
             var applicationUser = await userManager.GetUserAsync(claimsPrincipal);
             return new IndexViewModel {
-                Blogs = blogService.GetBlogs(applicationUser)
+                Posts = postService.GetPosts(applicationUser)
             };
 
         }
