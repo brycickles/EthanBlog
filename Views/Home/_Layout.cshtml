@@ -17,17 +17,19 @@
 </head>
 <body>
     <!-- Navigation-->
-
     @await Component.InvokeAsync("Navigation")
     <!-- Page Header-->
     @await Component.InvokeAsync("Header")
 
-    <!-- Page Body-->
-    @RenderBody();
+    <div class="content">
+        <!-- Page Body-->
+        @RenderBody();
+    </div>
+
 
     <!-- Page Footer-->
     @await Component.InvokeAsync("Footer")
-    
+
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->

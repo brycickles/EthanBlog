@@ -1,7 +1,9 @@
 ﻿using EthanBlog.Authorization;
 using EthanBlog.BusinessManagers.Interfaces;
 using EthanBlog.Data.Models;
+using EthanBlog.Models.AdminViewModels;
 using EthanBlog.Models.BlogViewModels;
+using EthanBlog.Models.HomeViewModels;
 using EthanBlog.Service.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using PagedList.Core;
 using System;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -31,6 +34,22 @@ namespace EthanBlog.BusinessManagers
             this.blogService = blogService;
             this.webHostEnvironment = webHostEnvironment;
             this.authorizationService = authorizationService;
+        }
+
+        public Models.HomeViewModels.IndexViewModel GetIndexViewModel(string searchString, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            var blogs = blogService.GetBlogs(searchString ?? string.Empty)
+                .Where(blog => blog.Published);
+
+            return new Models.HomeViewModels.IndexViewModel
+            { 
+                Blogs = new StaticPagedList<Blog>(blogs.Skip((pageNumber - 1) * pageSize).Take(pageSize), pageNumber, pageSize, blogs.Count()),
+                SearchString = searchString, 
+                PageNumber = pageNumber
+            };
+
         }
         public async Task<Blog> CreateBlog(CreateViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
         {
