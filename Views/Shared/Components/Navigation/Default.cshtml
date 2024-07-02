@@ -1,6 +1,6 @@
 ﻿<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Ethan's Blog</a>
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
@@ -9,6 +9,18 @@
             <ul class="navbar-nav ms-auto py-4 py-lg-0">                
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Fishing Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Technique Guides</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Fly Tying</a>
                 </li>
                 @await Html.PartialAsync("_LoginPartial")
             </ul>
