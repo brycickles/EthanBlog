@@ -15,7 +15,6 @@ namespace Ethanpost.Controllers
             this.postBusinessManager = postBusinessManager;
         }
 
-        [Route("Post/{id}"),AllowAnonymous]
         public async Task<IActionResult> Index(int? id)
         {
             var actionResult = await postBusinessManager.GetPostViewModel(id, User);
@@ -55,6 +54,18 @@ namespace Ethanpost.Controllers
             if (actionResult.Result is null)
             {
                 return RedirectToAction("Edit", new { editViewModel.Post.Id });
+            }
+            return actionResult.Result;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(PostViewModel postViewModel)
+        {
+            var actionResult = await postBusinessManager.CreateComment(postViewModel, User);
+
+            if (actionResult.Result is null)
+            {
+                return RedirectToAction("Index", new { postViewModel.Post.Id });
             }
             return actionResult.Result;
         }

@@ -9,9 +9,9 @@ namespace EthanBlog.Controllers
     {
         private readonly IPostBusinessManager postBusinessManager;
         private readonly IHomeBusinessManager homeBusinessManager;
-        public HomeController(IPostBusinessManager blogBusinessManager, IHomeBusinessManager homeBusinessManager)
+        public HomeController(IPostBusinessManager postBusinessManager, IHomeBusinessManager homeBusinessManager)
         {
-            this.postBusinessManager = blogBusinessManager;
+            this.postBusinessManager = postBusinessManager;
             this.homeBusinessManager = homeBusinessManager;
         }
 
